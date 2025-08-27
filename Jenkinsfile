@@ -18,7 +18,14 @@ pipeline {
         }
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 --name demo-app jenkins-demo-app:latest'
+                sh '''
+                # ลบ container เก่าถ้ามี
+                if [ $(docker ps -a -q -f name=demo-app) ]; then
+                    docker rm -f demo-app
+                fi
+                # รัน container ใหม่ที่ port 8081
+                docker run -d -p 8081:8081 --name demo-app jenkins-demo-app:latest
+                '''
             }
         }
     }
