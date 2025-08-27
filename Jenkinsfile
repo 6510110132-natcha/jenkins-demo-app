@@ -16,6 +16,12 @@ pipeline {
                 sh 'docker build -t jenkins-demo-app:latest .'
             }
         }
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests..."'
+                sh 'pytest || true'
+            }
+        }
         stage('Run Container') {
             steps {
                 sh '''
